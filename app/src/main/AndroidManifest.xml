@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainWindow"
+            android:label="@string/title_activity_main_window"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
