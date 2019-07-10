@@ -56,6 +56,7 @@ public class MainWindow extends AppCompatActivity {
         try {
             mDataHelper = new DatabaseHelper(this);
             mConection = mDataHelper.getWritableDatabase();
+            mDebtsDAO = new DebtsDAO(mConection);
             Snackbar.make(mLayout,"conexaoCriada", Snackbar.LENGTH_LONG).show();
         } catch (SQLException e) {
             Snackbar.make(mLayout, e.toString(), Snackbar.LENGTH_LONG).show();

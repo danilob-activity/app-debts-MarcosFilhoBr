@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.danilo.appdebts.R;
 import com.example.danilo.appdebts.classes.Debts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,11 @@ import java.util.List;
 
 public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolderDebts> {
     private List<Debts> mData;
+    private List<ViewHolderDebts> mDataViews = new ArrayList<ViewHolderDebts>();
+    private int selectedItem = -1; // índice do último viewholder selecionado
+    private int actualItem = -1; // índice do atual viewholder selecionado
+
+
     public DebtsAdapter(List<Debts> data) {
         mData = data;
     }
