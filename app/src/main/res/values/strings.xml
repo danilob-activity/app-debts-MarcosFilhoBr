@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">AppDebts</string>
     <string name="title_activity_main_window">MainWindow</string>
+    <string name="OkMenu">okMenu</string>
+    <string name="CancelMenu">cancelMenu</string>
+    <string name="titleInsert">New Debts</string>
 </resources>
