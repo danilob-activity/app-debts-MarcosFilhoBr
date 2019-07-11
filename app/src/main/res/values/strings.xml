@@ -4,4 +4,10 @@
     <string name="OkMenu">okMenu</string>
     <string name="CancelMenu">cancelMenu</string>
     <string name="titleInsert">New Debts</string>
+    <string name="categoria">Categoria</string>
+    <string name="description">Descricao</string>
+    <string name="lixeira">imageViewLixeira</string>
+    <string name="cartao">imageViewCartao</string>
+    <string name="correto">imageButtonCorreto</string>
+
 </resources>

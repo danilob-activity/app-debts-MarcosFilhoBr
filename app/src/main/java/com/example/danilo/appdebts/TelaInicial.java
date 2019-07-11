@@ -26,7 +26,6 @@ public class TelaInicial extends AppCompatActivity {
 //        catDAO.insert(cat);
 //        catDAO.listCategorias();
 
-        //Ca
     }
 
 

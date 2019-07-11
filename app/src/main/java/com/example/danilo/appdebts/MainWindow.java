@@ -22,7 +22,6 @@ public class MainWindow extends AppCompatActivity {
     DebtsAdapter mDebtsAdapter;
     DebtsDAO mDebtsDAO;
     private ConstraintLayout mLayout;
-
     private SQLiteDatabase mConection;
     private DatabaseHelper mDataHelper;
 

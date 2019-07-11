@@ -6,8 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 public class InsertDebts extends AppCompatActivity {
+
+    public class onCreateOptionsMenu(Menu menu){
+        
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +22,8 @@ public class InsertDebts extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled( true); //Mostrar o botão
         getSupportActionBar().setHomeButtonEnabled( true); //Ativar o botão
         getSupportActionBar().setTitle( R.string.titleInsert);
+
+        EditText mEditTextDataPay;
 
     }
     @Override
