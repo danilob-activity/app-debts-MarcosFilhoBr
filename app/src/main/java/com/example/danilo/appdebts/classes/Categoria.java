@@ -4,7 +4,7 @@ public class Categoria {
     private long mId;
     private String mType;
 
-    public Categoria() {
+    public Categoria(String s) {
 
     }
     public String getTipo() {

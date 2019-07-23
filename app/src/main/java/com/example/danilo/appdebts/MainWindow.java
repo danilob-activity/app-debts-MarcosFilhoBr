@@ -1,5 +1,6 @@
 package com.example.danilo.appdebts;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -21,45 +22,36 @@ public class MainWindow extends AppCompatActivity {
     RecyclerView mListDebts;
     DebtsAdapter mDebtsAdapter;
     DebtsDAO mDebtsDAO;
-    private ConstraintLayout mLayout;
-    private SQLiteDatabase mConection;
-    private DatabaseHelper mDataHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_window);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        SQLiteDatabase connection = DBConnection.getConnection(this);
+        mDebtsDAO = new DebtsDAO(connection);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent cad = new Intent(MainWindow.this, InsertDebts.class);
+                startActivity(cad);
             }
         });
 
         mListDebts = findViewById(R.id.recycler_view_debts);
-        mLayout = findViewById(R.id.layout);
-        createConnection();
+
+//        Seeder.seed(connection);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mListDebts.setLayoutManager(linearLayoutManager);
-        mDebtsAdapter = new DebtsAdapter(mDebtsDAO.listDividas());
+        mDebtsAdapter = new DebtsAdapter(mDebtsDAO.list());
         mListDebts.setAdapter(mDebtsAdapter);
         mListDebts.setHasFixedSize(true);
-    }
-
-    private void createConnection() {
-        try {
-            mDataHelper = new DatabaseHelper(this);
-            mConection = mDataHelper.getWritableDatabase();
-            mDebtsDAO = new DebtsDAO(mConection);
-            Snackbar.make(mLayout,"conexaoCriada", Snackbar.LENGTH_LONG).show();
-        } catch (SQLException e) {
-            Snackbar.make(mLayout, e.toString(), Snackbar.LENGTH_LONG).show();
-        }
     }
 
 }

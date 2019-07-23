@@ -12,84 +12,89 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DebtsDAO {
-    private SQLiteDatabase mConnection;
+    private SQLiteDatabase connection;
+    private static final String TAG = "DebtDAO";
 
-    public DebtsDAO(SQLiteDatabase connection){
-
-        mConnection = connection;
+    public DebtsDAO(SQLiteDatabase connection) {
+        this.connection = connection;
     }
-    public void insertDebts(Debts debts){
+
+    public Debts insert(Debts debt) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("valor", debts.getValor());
-        contentValues.put("descricao", debts.getDescricao());
-        contentValues.put("data_vencimento", debts.getDataVencimento());
-        contentValues.put("data_pagamento", debts.getDataPagamento());
-        contentValues.put("cod_cat", debts.getCategoria().getId());
-        mConnection.insertOrThrow("dividas", null, contentValues);
-        Log.d("DebtsDAO", "Inserção Feita!");
+        contentValues.put("cod_cat", debt.getCategoria().getId());
+        contentValues.put("valor", debt.getValor());
+        contentValues.put("descricao", debt.getDescricao());
+        contentValues.put("data_vencimento", debt.getDataPagamento());
+        contentValues.put("data_pagamento", debt.getDataPagamento());
+        long id = this.connection.insertOrThrow("dividas", null, contentValues);
+        debt.setId(id);
+        Log.d(TAG, "Divida inserida com sucesso");
+        return debt;
     }
 
-    public void remove(int id){
+    public void remove(long id) {
         String[] params = new String[1];
         params[0] = String.valueOf(id);
-        mConnection.delete("dividas", "id = ?",params);
-    }
-    public void alter(Debts debts){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("valor", debts.getValor());
-        contentValues.put("descricao", debts.getDescricao());
-        contentValues.put("data_vencimento", debts.getDataVencimento());
-        contentValues.put("data_pagamento", debts.getDataPagamento());
-        contentValues.put("cod_cat", debts.getCategoria().getId());
-        String[] params = new String[1];
-        params[0] = String.valueOf(debts.getId());
-        mConnection.update("dividas",contentValues, "id = ?",params);
+        connection.delete("dividas", "id = ?", params);
+        Log.d(TAG, "Divida ID: " + id + " excluida com sucesso");
     }
 
-    public List<Debts> listDividas(){
-        List<Debts> dividas = new ArrayList<Debts>();
-        Cursor result = mConnection.rawQuery("Select id, tipo from dividas",null);
-        if(result.getCount()>0){
+    public void alter(Debts debt) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("cod_cat", debt.getCategoria().getId());
+        contentValues.put("valor", debt.getValor());
+        contentValues.put("descricao", debt.getDescricao());
+        contentValues.put("data_vencimento", debt.getDataVencimento());
+        contentValues.put("data_pagamento", debt.getDataPagamento());
+        String[] params = new String[1];
+        params[0] = String.valueOf(debt.getId());
+        connection.update("dividas", contentValues, "id = ?", params);
+        Log.d(TAG, "Divida ID: " + debt.getId() + " alterada com sucesso");
+    }
+
+    public List<Debts> list() {
+        List<Debts> debts = new ArrayList<Debts>();
+        Cursor result = connection.rawQuery("SELECT * FROM dividas", null);
+        CategoriaDAO categoriaDAO = new CategoriaDAO(connection);
+        if (result.getCount() > 0) {
             result.moveToFirst();
-            CategoriaDAO categoryDAO = new CategoriaDAO(mConnection);
-            do{
-                Debts div = new Debts();
-                Categoria cat = categoryDAO.getCategoria(result.getInt(result.getColumnIndexOrThrow("cod_cat")));
-                div.setId(result.getInt(result.getColumnIndexOrThrow("id")));
-                div.setValor(result.getFloat(result.getColumnIndexOrThrow("valor")));
-                div.setDescricao(result.getString(result.getColumnIndexOrThrow("descricao")));
-                div.setDataVencimento(result.getString(result.getColumnIndexOrThrow("data_vencimento")));
-                div.setDataPagamento(result.getString(result.getColumnIndexOrThrow("data_pagamento")));
-                div.setCategoria(cat);
-                dividas.add(div);
-                Log.d("DebtsDAO","Listando: "+ div.getId()+" - "+ div.getDescricao()+" - " + div.getValor());
-            }while(result.moveToNext());
+            do {
+                Debts deb = new Debts();
+                Categoria categoria = categoriaDAO.get(result.getInt(result.getColumnIndexOrThrow("cod_cat")));
+                deb.setId(result.getInt(result.getColumnIndexOrThrow("id")));
+                deb.setValor(result.getDouble(result.getColumnIndexOrThrow("valor"));
+                deb.setDescricao(result.getString(result.getColumnIndexOrThrow("descricao")));
+                deb.setDataVencimento(result.getString(result.getColumnIndexOrThrow("data_vencimento")));;
+                deb.setDataPagamento(result.getString(result.getColumnIndexOrThrow("data_pagamento")));
+                deb.setCategoria(categoria);
+                debts.add(deb);
+                Log.d(TAG, "Listando: " + deb.getId() + " - " + deb.getDescricao());
+            } while(result.moveToNext());
             result.close();
         }
-        return dividas;
+        return debts;
     }
 
-    public Debts getDebts(int id){
-        Debts div = new Debts();
+    public Debts get(long id) {
+        Debts debts = new Debts();
+        CategoriaDAO categoriaDAO = new CategoriaDAO(connection);
         String[] params = new String[1];
         params[0] = String.valueOf(id);
-        CategoriaDAO categoryDAO = new CategoriaDAO(mConnection);
-        Cursor result = mConnection.rawQuery("Select * from categoria where id='?'",params);
-        if(result.getCount()>0){
+        Cursor result = connection.rawQuery("SELECT * FROM dividas WHERE id = ?", params);
+        if(result.getCount() > 0) {
             result.moveToFirst();
-            Categoria cat = categoryDAO.getCategoria(result.getInt(result.getColumnIndexOrThrow("cod_cat")));
-            div.setId(result.getInt(result.getColumnIndexOrThrow("id")));
-            div.setValor(result.getFloat(result.getColumnIndexOrThrow("valor")));
-            div.setDescricao(result.getString(result.getColumnIndexOrThrow("descricao")));
-            div.setDataVencimento(result.getString(result.getColumnIndexOrThrow("data_vencimento")));
-            div.setDataPagamento(result.getString(result.getColumnIndexOrThrow("data_pagamento")));
-            div.setCategoria(cat);
+            Categoria categoria = categoriaDAO.get(result.getColumnIndexOrThrow("cod_cat"));
+            debts.setId(result.getInt(result.getColumnIndexOrThrow("id")));
+            debts.setValor(result.getDouble(result.getColumnIndexOrThrow("valor"));
+            debts.setDescricao(result.getString(result.getColumnIndexOrThrow("descricao")));
+            debts.setDataVencimento(result.getString(result.getColumnIndexOrThrow("data_vencimento")))];
+            debts.setDataPagamento(result.getString(result.getColumnIndexOrThrow("data_pagamento")));
+            debts.setCategoria(categoria);
             result.close();
-            return div;
+            Log.d(TAG, "Divida ID: " + id + " obtida com sucesso");
+            return debts;
         }
-
         return null;
-
     }
 
 
