@@ -1,31 +1,31 @@
-package com.example.danilo.appdebts.dao;
+package com.example.danilo.appdebts.DAO;
+
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.danilo.appdebts.classes.Categoria;
+import com.example.danilo.appdebts.classes.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriaDAO {
-
+public class CategoryDAO {
     private SQLiteDatabase connection;
-    private static final String TAG = "CategoriaDAO";
+    private static final String TAG = "CategoryDAO";
 
-    public CategoriaDAO(SQLiteDatabase connection) {
+    public CategoryDAO(SQLiteDatabase connection) {
         this.connection = connection;
     }
 
-    public Categoria insert(Categoria categoria){
+    public Category insert(Category category){
         ContentValues contentValues = new ContentValues();
-        contentValues.put("tipo", categoria.getTipo());
+        contentValues.put("tipo", category.getType());
         long id = this.connection.insertOrThrow("categoria", null, contentValues);
-        categoria.setId(id);
+        category.setId(id);
         Log.d(TAG, "Categoria inserida com sucesso");
-        return categoria;
+        return category;
     }
 
     public void remove(long id){
@@ -35,56 +35,56 @@ public class CategoriaDAO {
         Log.d(TAG, "Categoria ID: " + id + " exlcuida com sucesso");
     }
 
-    public void alter(Categoria categoria){
+    public void alter(Category category){
         ContentValues contentValues = new ContentValues();
-        contentValues.put("tipo", categoria.getTipo());
+        contentValues.put("tipo", category.getType());
         String[] params = new String[1];
-        params[0] = String.valueOf(categoria.getId());
+        params[0] = String.valueOf(category.getId());
         connection.update("categoria", contentValues, "id = ?", params);
-        Log.d(TAG, "Categoria ID: " + categoria.getId() + " alterada com sucesso");
+        Log.d(TAG, "Categoria ID: " + category.getId() + " alterada com sucesso");
     }
 
-    public List<Categoria> list() {
-        List<Categoria> categories = new ArrayList<Categoria>();
+    public List<Category> list() {
+        List<Category> categories = new ArrayList<Category>();
         Cursor result = connection.rawQuery("SELECT * FROM categoria", null);
         if(result.getCount() > 0) {
             result.moveToFirst();
             do {
-                Categoria cat = new Categoria(edtText.getText().toString());
+                Category cat = new Category();
                 cat.setId(result.getInt(result.getColumnIndexOrThrow("id")));
-                cat.setTipo(result.getString(result.getColumnIndexOrThrow("tipo")));
+                cat.setType(result.getString(result.getColumnIndexOrThrow("tipo")));
                 categories.add(cat);
-                Log.d(TAG, "Listando: " + cat.getId() + " " + cat.getTipo());
+                Log.d(TAG, "Listando: " + cat.getId() + " " + cat.getType());
             } while(result.moveToNext());
             result.close();
         }
         return categories;
     }
 
-    public Categoria getByType(String type) {
-        Categoria cat = new Categoria(edtText.getText().toString());
+    public Category getByType(String type) {
+        Category cat = new Category();
         String[] params = new String[1];
         params[0] = type;
         Cursor result = connection.rawQuery("SELECT * FROM categoria WHERE tipo=?", params);
         if(result.getCount() > 0) {
             result.moveToFirst();
             cat.setId(result.getLong(result.getColumnIndexOrThrow("id")));
-            cat.setTipo(result.getString(result.getColumnIndexOrThrow("tipo")));
+            cat.setType(result.getString(result.getColumnIndexOrThrow("tipo")));
             result.close();
             return cat;
         }
         return null;
     }
 
-    public Categoria get(long id){
-        Categoria category = new Categoria(edtText.getText().toString());
+    public Category get(long id){
+        Category category = new Category();
         String[] params = new String[1];
         params[0] = String.valueOf(id);
         Cursor result = connection.rawQuery("SELECT * FROM categoria WHERE id=?", params);
         if(result.getCount() > 0) {
             result.moveToFirst();
             category.setId(result.getInt(result.getColumnIndexOrThrow("id")));
-            category.setTipo(result.getString(result.getColumnIndexOrThrow("tipo")));
+            category.setType(result.getString(result.getColumnIndexOrThrow("tipo")));
             result.close();
             Log.d(TAG, "Categoria ID: " + id + " obtida com sucesso");
             return category;

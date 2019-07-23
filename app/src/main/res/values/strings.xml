@@ -1,13 +1,12 @@
 <resources>
     <string name="app_name">AppDebts</string>
+    <string name="sucess_conection">Conexão realizada com sucesso.</string>
     <string name="title_activity_main_window">MainWindow</string>
-    <string name="OkMenu">okMenu</string>
-    <string name="CancelMenu">cancelMenu</string>
-    <string name="titleInsert">New Debts</string>
-    <string name="categoria">Categoria</string>
-    <string name="description">Descricao</string>
-    <string name="lixeira">imageViewLixeira</string>
-    <string name="cartao">imageViewCartao</string>
-    <string name="correto">imageButtonCorreto</string>
-
+    <string name="insertTitle">New Debt</string>
+    <string name="okMenu">OK</string>
+    <string name="cancelMenu">Cancel</string>
+    <string name="newCategoryTitle">Insert new Category</string>
+    <string name="category">Category</string>
+    <string name="description">Description</string>
+    <string name="to_pay">To Pay</string>
 </resources>

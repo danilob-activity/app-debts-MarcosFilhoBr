@@ -6,24 +6,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String BD = "debts.db";
-    private static final int DB_VERSION = 1;
+    private static final String DB_NAME = "debts.db";
+    private static final Integer DB_VERSION = 1;
 
-    public DatabaseHelper(Context context){
-        super(context, BD, null, DB_VERSION);
+    public DatabaseHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
     }
-//    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-//        super(context, name, factory, version);
-//    }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase){
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(ScriptDLL.createTableCategory());
-        sqLiteDatabase.execSQL(ScriptDLL.createTableDividas());
+        sqLiteDatabase.execSQL(ScriptDLL.createTableDebts());
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
 }

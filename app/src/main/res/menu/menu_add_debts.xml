@@ -3,8 +3,8 @@
 
     <item
         android:id="@+id/okMenu"
-        android:title="@string/OkMenu" />
+        android:title="@string/okMenu" />
     <item
         android:id="@+id/cancelMenu"
-        android:title="@string/CancelMenu" />
+        android:title="@string/cancelMenu" />
 </menu>
